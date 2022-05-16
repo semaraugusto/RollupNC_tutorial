@@ -1,4 +1,6 @@
-include "../circomlib/circuits/mimc.circom";
+pragma circom 2.0.4;
+
+include "../node_modules/circomlib/circuits/mimc.circom";
 
 template GetMerkleRoot(k){
 // k is depth of tree
@@ -20,12 +22,10 @@ template GetMerkleRoot(k){
         merkle_root[v] = MultiMiMC7(2,91);
         merkle_root[v].in[0] <== paths2_root[v] - paths2_root_pos[v]* (paths2_root[v] - merkle_root[v-1].out);
         merkle_root[v].in[1] <== merkle_root[v-1].out - paths2_root_pos[v]* (merkle_root[v-1].out - paths2_root[v]);
-        
+
     }
 
     // output computed Merkle root
     out <== merkle_root[k-1].out;
 
 }
-
-// component main = GetMerkleRoot(2)

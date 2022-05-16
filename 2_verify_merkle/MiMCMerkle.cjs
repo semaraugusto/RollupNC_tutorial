@@ -1,4 +1,6 @@
-const mimcjs = require("../circomlib/src/mimc7.js");
+import buildMimc7 from "../node_modules/circomlibjs/src/mimc7.js"
+
+let mimcjs = await buildMimc7();
 const bigInt = require("snarkjs").bigInt;
 
 

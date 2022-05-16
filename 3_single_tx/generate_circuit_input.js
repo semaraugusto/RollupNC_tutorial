@@ -1,7 +1,11 @@
-const fs = require("fs");
-const eddsa = require("../circomlib/src/eddsa.js");
-const mimcjs = require("../circomlib/src/mimc7.js");
+import * as fs from "fs";
+// import * as eddsa from "../node_modules/circomlibjs/src/eddsa.js"
+import buildEddsa from "../node_modules/circomlibjs/src/eddsa.js"
+import buildMimc7 from "../node_modules/circomlibjs/src/mimc7.js"
 
+let eddsa = await buildEddsa();
+let mimcjs = await buildMimc7();
+console.log(eddsa);
 const alicePrvKey = Buffer.from('1'.toString().padStart(64,'0'), "hex");
 const alicePubKey = eddsa.prv2pub(alicePrvKey);
 const bobPrvKey = Buffer.from('2'.toString().padStart(64,'0'), "hex");

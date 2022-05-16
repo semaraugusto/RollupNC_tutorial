@@ -1,3 +1,5 @@
 # Zk Rollup Tutorial
 
-Head over to : https://keen-noyce-c29dfa.netlify.com/#0
+In this assignment we'll build circuits for a ZK Rollup using circom.
+
+

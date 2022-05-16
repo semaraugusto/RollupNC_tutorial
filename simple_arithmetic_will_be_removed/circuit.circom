@@ -1,8 +1,8 @@
 template SimpleChecks() {
-    signal private input a;
-    signal private input b;
+    signal input a;
+    signal input b;
     signal input c;
-    signal private input d;
+    signal input d;
     signal output out;
     
     // force a + b = c
@@ -15,4 +15,4 @@ template SimpleChecks() {
     out <== c + d;
 }
 
-component main = SimpleChecks();
+component main {public[c]} = SimpleChecks();
