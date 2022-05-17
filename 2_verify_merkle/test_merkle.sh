@@ -1,3 +1,4 @@
+alias snarkjs="node /home/semar/Projects/zku/RollupNC_tutorial/3_verify_merkle/node_modules/snarkjs/cli.js" 
 if [ -f ./powersOfTau28_hez_final_16.ptau ]; then
     echo "powersOfTau28_hez_final_16.ptau already exists. Skipping."
 else
@@ -5,7 +6,9 @@ else
     wget https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_16.ptau
 fi
 
-snarkjs powersoftau verify powersOfTau28_hez_final_16.ptau
+# echo "verifying ptau"
+# snarkjs powersoftau verify powersOfTau28_hez_final_16.ptau
+echo "compiling circom"
 circom merkle.circom --r1cs --wasm --sym
 # snarkjs r1cs info merkle.r1cs
 # snarkjs r1cs print merkle.r1cs merkle.sym
