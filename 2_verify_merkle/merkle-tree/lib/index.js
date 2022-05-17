@@ -4,7 +4,7 @@ exports.MerkleTree = exports.poseidonHash2 = exports.poseidonHash = void 0;
 // keccak256("tornado") % BN254_FIELD_SIZE
 var DEFAULT_ZERO = '21663839004416932945382355908790599225266501822907911457504978515578255421292';
 var ethers_1 = require("ethers");
-var poseidon = require('circomlibjs').poseidon;
+var poseidon = require('./poseidon');
 
 var poseidonHash = function (items) {
     return ethers_1.BigNumber.from(poseidon(items).toString());
