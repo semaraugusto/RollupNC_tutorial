@@ -1,98 +1,71 @@
-import * as fs from "fs";
-import buildMimc7 from "../node_modules/circomlibjs/src/mimc7.js"
-
-let mimcjs = await buildMimc7();
-// import mimcMerkle from "MiMCMerkle.js";
+const fs = require("fs");
+// const mimcjs = require("../node_modules/circomlibjs/src/mimc7.js");
 // const mimcMerkle = require('./MiMCMerkle.js')
+// const merkle_tree_lib = require("./MerkleTree.js")
+const merkle_tree_lib = require("./merkle-tree")
+var ethers = require("ethers");
+var {poseidon} = require('circomlibjs');
 
-const leaf1 = mimcjs.multiHash([1,2,3])
-const leaf2 = mimcjs.multiHash([4,5,6])
-const leaf3 = mimcjs.multiHash([7,8,9])
-const leaf4 = mimcjs.multiHash([9,8,7])
-const leafArray = [leaf1,leaf2,leaf3,leaf4]
+var poseidonHash = function (items) {
+    return ethers.BigNumber.from(poseidon(items).toString());
+};
+var poseidonHash2 = function (a, b) {
+    return poseidonHash([a, b]);
+};
+// const poseidon = require("./poseidon")
+// const { poseidonHash2 } =require('poseidon.ts')
+//
+//
+const leaf11 = poseidonHash2(1,2)
+const leaf21 = poseidonHash2(3,4)
+const leaf31 = poseidonHash2(5,6)
+const leaf41 = poseidonHash2(7,8)
+const leafArray_1 = [leaf11,leaf21,leaf31,leaf41]
+//
+const tree_1 = new merkle_tree_lib.MerkleTree(2, leafArray_1)
 
-function getBase2Log(y) {
-    return Math.log(y) / Math.log(2);
+const leaf12 = poseidonHash2(9,0)
+const leaf22 = poseidonHash2(1,2)
+const leaf32 = poseidonHash2(3,4)
+const leaf42 = poseidonHash2(5,6)
+const leafArray_2 = [leaf12,leaf22,leaf32,leaf42]
+
+const tree_2 = new merkle_tree_lib.MerkleTree(2, leafArray_2)
+//
+// // const tree = mimcMerkle.treeFromLeafArray(leafArray)
+const root_1 = tree_1.root();
+const root_2 = tree_2.root();
+// console.log(tree)
+// console.log(leaf1.toString())
+// console.log(tree._layers[0][0].toString())
+// console.log(tree._layers[0][1].toString())
+// console.log(tree._layers[0][1].toString())
+// console.log(tree._layers[0])
+const { merkleRoot, pathElements, pathIndices, element } = tree_1.path(0)
+console.log(merkleRoot)
+console.log(pathElements)
+console.log(pathIndices)
+console.log(element)
+console.log(leaf11.toString())
+console.log(leaf11)
+console.log(leaf11)
+console.log(leaf11)
+console.log(leaf11)
+console.log(leaf11)
+console.log(leaf11)
+// let pathElem = pathElements.
+// const leaf1Pos = [1,1]
+let pathElem = []
+let pathIdx = []
+for(var i =0; i < pathElements.length; i++) {
+    pathElem.push(ethers.BigNumber.from(pathElements[i]).toHexString())
+    pathIdx.push(ethers.BigNumber.from(pathIndices[i]).toHexString())
 }
-
-function pairwiseHash(array) {
-    if (array.length % 2 == 0){
-        let arrayHash = []
-        for (var i = 0; i < array.length; i = i + 2){
-            arrayHash.push(mimcjs.multiHash(
-                [array[i],array[i+1]]
-            ))
-        }
-        return arrayHash
-    } else {
-        console.log('array must have even number of elements')
-    }
-}
-function treeFromLeafArray(leafArray) {
-    let depth = getBase2Log(leafArray.length);
-    let tree = Array(depth);
-
-    tree[depth - 1] = pairwiseHash(leafArray)
-
-    for (var j = depth - 2; j >= 0; j--){
-        tree[j] = pairwiseHash(tree[j+1])
-    }
-
-    // return treeRoot[depth-1]
-    return tree
-}
-function idxToBinaryPos(idx, binLength) {
-    binString = idx.toString(2);
-    binPos = Array(binLength).fill(0)
-    for (var j = 0; j < binString.length; j++){
-        binPos[j] = Number(binString.charAt(binString.length - j - 1));
-    }
-    return binPos;
-}
-
-function proofIdx(leafIdx, treeDepth) {
-    let proofIdxArray = new Array(treeDepth);
-    let proofPos = idxToBinaryPos(leafIdx, treeDepth);
-    // console.log('proofPos', proofPos)
-
-    if (leafIdx % 2 == 0){
-        proofIdxArray[0] = leafIdx + 1;
-    } else {
-        proofIdxArray[0] = leafIdx - 1;
-    }
-
-    for (var i = 1; i < treeDepth; i++){
-        if (proofPos[i] == 1){
-            proofIdxArray[i] = Math.floor(proofIdxArray[i - 1] / 2) - 1;
-        } else {
-            proofIdxArray[i] = Math.floor(proofIdxArray[i - 1] / 2) + 1;
-        }
-    }
-
-    return(proofIdxArray)
-}
-
-function getProof(leafIdx, tree, leaves) {
-    let depth = tree.length;
-    let proofIdx = proofIdx(leafIdx, depth);
-    let proof = new Array(depth);
-    proof[0] = leaves[proofIdx[0]]
-    for (var i = 1; i < depth; i++){
-        proof[i] = tree[depth - i][proofIdx[i]]
-    }
-    return proof;
-}
-
-const tree = treeFromLeafArray(leafArray)
-const root = tree[0][0];
-const leaf1Proof = getProof(0, tree, leafArray)
-const leaf1Pos = [1,1]
-
 const inputs = {
-    "in": [1,2,3],
-    "merkle_root": root.toString(),
-    "path_elements": [leaf1Proof[0].toString(),leaf1Proof[1].toString()],
-    "path_indices": leaf1Pos
+    "leaf": [leaf11.toHexString()],
+    "pathElements": pathElem,
+    "pathIndices": pathIdx,
+    "roots": [root_1.toHexString(), root_2.toHexString()],
 }
 
 fs.writeFileSync(
