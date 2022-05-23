@@ -1,6 +1,6 @@
 node_modules
 witness.json
-verification_key.json
+*/*/verification_key.json
 proving_key.json
 input.json
 proof.json
@@ -8,3 +8,9 @@ public.json
 circuit.json
 package-lock.json
 debug.js
+*.zkey
+*.ptau
+*.r1cs
+*.wasm
+challenge*
+response*
