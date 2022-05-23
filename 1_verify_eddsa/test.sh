@@ -1,4 +1,4 @@
-alias snarkjs="node ../node_modules/snarkjs/cli.js" 
+alias snarkjs="node ./node_modules/snarkjs/cli.js" 
 if [ -f ./powersOfTau28_hez_final_16.ptau ]; then
     echo "powersOfTau28_hez_final_16.ptau already exists. Skipping."
 else
