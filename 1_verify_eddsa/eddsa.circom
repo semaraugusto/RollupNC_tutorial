@@ -22,24 +22,29 @@ template VerifyEdDSAPoseidon(k) {
     signal input R8x;
     signal input R8y;
     signal input S;
-    signal input leaf[k];
+    signal input leaf;
     
-    component M = PoseidonHashT4();
-    for (var i = 0; i < k; i++){
-        log(leaf[i]);
-        M.inputs[i] <== leaf[i];
-    }
+    /* component M = PoseidonHashT4(); */
+    /* for (var i = 0; i < k; i++){ */
+    /*     log(leaf[i]); */
+    /*     M.inputs[i] <== leaf[i]; */
+    /* } */
     
     component verifier = EdDSAPoseidonVerifier();   
     // Add inputs to verifier
-    verifier.enabled <== 0;
+    verifier.enabled <== 1;
+    log(from_x);
+    log(from_y);
+    log(R8x);
+    log(R8y);
+    log(S);
     verifier.Ax <== from_x;
     verifier.Ay <== from_y;
     verifier.R8x <== R8x;
     verifier.R8y <== R8y;
     verifier.S <== S;
-    log(M.out);
-    verifier.M <== M.out;
+    /* log(M.out); */
+    verifier.M <== leaf;
 }
 
 component main{public[from_x, from_y, R8x, R8y, S]} = VerifyEdDSAPoseidon(3);

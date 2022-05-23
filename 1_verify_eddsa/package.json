@@ -18,7 +18,8 @@
   "homepage": "https://github.com/therealyingtong/RollupNC_tutorial#readme",
   "dependencies": {
     "circomlib": "2.0.3",
-    "circomlibjs": "0.1.2",
-    "snarkjs": "0.4.16"
+    "circomlibjs": "0.0.8",
+    "snarkjs": "0.4.16",
+    "ethers": "5.6.7"
   }
 }
