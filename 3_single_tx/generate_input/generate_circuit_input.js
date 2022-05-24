@@ -1,6 +1,10 @@
 import * as fs from "fs";
-import { prv2pub, signPoseidon } from "./node_modules/circomlibjs/src/eddsa.js";
-import poseidon from "./node_modules/circomlibjs/src/poseidon.js";
+import {
+    prv2pub,
+    signPoseidon,
+} from "../../node_modules/circomlibjs/src/eddsa.js";
+import poseidon from "../../node_modules/circomlibjs/src/poseidon.js";
+import MerkleTree from "./merkle-tree-lib/lib/index.js";
 import { BigNumber } from "ethers";
 
 var poseidonHash = async function (items) {
@@ -22,13 +26,18 @@ const aliceHash = await poseidonHash([
     Alice.balance,
 ]);
 
+console.log("aliceHash: ", aliceHash.toString());
 const Bob = {
     pubkey: bobPubKey,
     balance: 0,
 };
 const bobHash = await poseidonHash([Bob.pubkey[0], Bob.pubkey[1], Bob.balance]);
-
-const accounts_root = await poseidonHash([aliceHash, bobHash]);
+console.log("bobHash: ", bobHash.toString());
+const leafArray = [aliceHash, bobHash];
+const tree = new MerkleTree.MerkleTree(1, leafArray);
+const accounts_root = tree.root();
+console.log("accounts_root: ", accounts_root.toString());
+// const accounts_root = await poseidonHash([aliceHash, bobHash]);
 
 // transaction
 const tx = {
@@ -59,8 +68,14 @@ const newAliceHash = await poseidonHash([
     newAlice.balance,
 ]);
 
+console.log("newAliceHash: ", newAliceHash.toString());
+console.log("bobHash: ", bobHash.toString());
 // update intermediate root
-const intermediate_root = await poseidonHash([newAliceHash, bobHash]);
+const intermediate_root = new MerkleTree.MerkleTree(1, [
+    newAliceHash,
+    bobHash,
+]).root();
+console.log("intermRoot: ", intermediate_root.toString());
 
 // update Bob account
 const newBob = {
@@ -76,6 +91,7 @@ const newBobHash = await poseidonHash([
 // update final root
 const final_root = await poseidonHash([newAliceHash, newBobHash]);
 
+console.log(final_root.toString());
 const inputs = {
     accounts_root: accounts_root.toString(),
     intermediate_root: intermediate_root.toString(),
@@ -93,9 +109,9 @@ const inputs = {
     signature_R8y: signature["R8"][1].toString(),
     signature_S: signature["S"].toString(),
     sender_proof: [bobHash.toString()],
-    sender_proof_pos: [1],
+    sender_proof_pos: [0],
     receiver_proof: [newAliceHash.toString()],
-    receiver_proof_pos: [0],
+    receiver_proof_pos: [1],
 };
 
 fs.writeFileSync("./input.json", JSON.stringify(inputs), "utf-8");
