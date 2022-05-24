@@ -3,8 +3,8 @@ import * as fs from "fs";
 import {
     prv2pub,
     signPoseidon,
-} from "../node_modules/circomlibjs/src/eddsa.js";
-import poseidon from "../node_modules/circomlibjs/src/poseidon.js";
+} from "../../node_modules/circomlibjs/src/eddsa.js";
+import poseidon from "../../node_modules/circomlibjs/src/poseidon.js";
 import { BigNumber, utils } from "ethers";
 
 var poseidonHash = async function (items) {
