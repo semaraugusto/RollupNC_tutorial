@@ -38,7 +38,7 @@ const inputs = {
     R8x: signature.R8[0].toString(),
     R8y: signature.R8[1].toString(),
     S: signature.S.toString(),
-    leaf: msg.toString(),
+    leaf: leaf,
 };
 
 fs.writeFileSync("./input.json", JSON.stringify(inputs), "utf-8");
