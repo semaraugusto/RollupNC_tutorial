@@ -1,9 +1,7 @@
-pragma circom 2.0.0;
-/* include "../node_modules/circomlib/circuits/poseidon.circom"; */
+pragma circom 2.0.3;
 include "../node_modules/circomlib/circuits/comparators.circom";
-include "./poseidon.circom";
-
-// checks for existence of leaf in tree of depth k
+include "../node_modules/circomlib/circuits/poseidon.circom";
+include "./hasher.circom";
 
 // if s == 0 returns [in[0], in[1]]
 // if s == 1 returns [in[1], in[0]]
@@ -46,15 +44,15 @@ template ManyMerkleTreeChecker(levels, length, nInputs) {
     component selectors[levels];
     component hashers[levels];
 
-    component M = PoseidonHashT4();
+    component leaf_hasher = Poseidon(nInputs);
     for (var i = 0; i < nInputs; i++){
         log(leaf[i]);
-        M.inputs[i] <== leaf[i];
+        leaf_hasher.inputs[i] <== leaf[i];
     }
 
     for (var i = 0; i < levels; i++) {
         selectors[i] = DualMux();
-        selectors[i].in[0] <== i == 0 ? M.out : hashers[i - 1].hash;
+        selectors[i].in[0] <== i == 0 ? leaf_hasher.out : hashers[i - 1].hash;
         selectors[i].in[1] <== pathElements[i];
         selectors[i].s <== pathIndices[i];
 
@@ -71,7 +69,6 @@ template ManyMerkleTreeChecker(levels, length, nInputs) {
         set.set[i] <== roots[i];
     }
     set.out === 1;
-    /* out <== 1; */
 }
 
 component main = ManyMerkleTreeChecker(2, 2, 3);

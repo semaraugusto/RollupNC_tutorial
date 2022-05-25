@@ -6,9 +6,6 @@ const poseidon = require("circomlibjs").poseidon;
 var poseidonHash = async function (items) {
     return ethers.BigNumber.from(poseidon(items));
 };
-// var poseidonHash = function (a, b, c) {
-//     return poseidonHash([a, b, c]);
-// };
 async function main() {
     const leaf11 = await poseidonHash([1, 2, 3]);
     const leaf21 = await poseidonHash([3, 4, 5]);
@@ -47,5 +44,5 @@ async function main() {
     fs.writeFileSync("./input.json", JSON.stringify(inputs), "utf-8");
 }
 main().then(() => {
-    console.log("TERMINOU");
+    console.log("Inputs Ready!");
 });
