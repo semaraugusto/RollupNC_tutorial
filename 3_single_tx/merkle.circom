@@ -28,14 +28,14 @@ template GetMerkleRoot(levels, nInputs) {
     component selectors[levels];
     component hashers[levels];
 
-    component M = PoseidonHashT4();
+    component leaf_hasher = PoseidonHash(nInputs);
     for (var i = 0; i < nInputs; i++){
-        M.inputs[i] <== leaf[i];
+        leaf_hasher.inputs[i] <== leaf[i];
     }
 
     for (var i = 0; i < levels; i++) {
         selectors[i] = DualMux();
-        selectors[i].in[0] <== i == 0 ? M.out : hashers[i - 1].hash;
+        selectors[i].in[0] <== i == 0 ? leaf_hasher.out : hashers[i - 1].hash;
         selectors[i].in[1] <== pathElements[i];
         selectors[i].s <== pathIndices[i];
 
@@ -56,23 +56,19 @@ template MerkleTreeChecker(levels, nInputs) {
     component selectors[levels];
     component hashers[levels];
 
-    component M = PoseidonHashT4();
+    component merkle_root_calc = GetMerkleRoot(levels, nInputs);
+    /* component leaf_hasher = PoseidonHash(nInputs); */
     for (var i = 0; i < nInputs; i++){
-        M.inputs[i] <== leaf[i];
+        /* leaf_hasher.inputs[i] <== leaf[i]; */
+        merkle_root_calc.leaf[i] <== leaf[i];
+    }
+    for (var i = 0; i < levels; i++){
+        merkle_root_calc.pathElements[i] <== pathElements[i];
+        merkle_root_calc.pathIndices[i] <== pathIndices[i];
     }
 
-    for (var i = 0; i < levels; i++) {
-        selectors[i] = DualMux();
-        selectors[i].in[0] <== i == 0 ? M.out : hashers[i - 1].hash;
-        selectors[i].in[1] <== pathElements[i];
-        selectors[i].s <== pathIndices[i];
-
-        hashers[i] = HashLeftRight();
-        hashers[i].left <== selectors[i].out[0];
-        hashers[i].right <== selectors[i].out[1];
-    }
     component is_equal = IsEqual();
-    is_equal.in[0] <== hashers[levels-1].hash;
+    is_equal.in[0] <== merkle_root_calc.out;
     is_equal.in[1] <== root;
     out <== is_equal.out;
 }

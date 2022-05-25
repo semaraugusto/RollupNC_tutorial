@@ -9,14 +9,8 @@ else
     popd
 fi
 
-# echo "verifying ptau"
-# snarkjs powersoftau verify powersOfTau28_hez_final_16.ptau
 echo "compiling circom"
 circom single_tx.circom --r1cs --wasm --sym
-# snarkjs r1cs info single_tx.r1cs
-# snarkjs r1cs print single_tx.r1cs single_tx.sym
-# snarkjs r1cs export json single_tx.r1cs single_tx.r1cs.json
-# cat single_tx.r1cs.json
 
 node generate_input/generate_circuit_input.js
 cd single_tx_js;

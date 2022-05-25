@@ -26,17 +26,14 @@ const aliceHash = await poseidonHash([
     Alice.balance,
 ]);
 
-console.log("aliceHash: ", aliceHash.toString());
 const Bob = {
     pubkey: bobPubKey,
     balance: 0,
 };
 const bobHash = await poseidonHash([Bob.pubkey[0], Bob.pubkey[1], Bob.balance]);
-console.log("bobHash: ", bobHash.toString());
 const leafArray = [aliceHash, bobHash];
 const tree = new MerkleTree.MerkleTree(1, leafArray);
 const accounts_root = tree.root();
-console.log("accounts_root: ", accounts_root.toString());
 // const accounts_root = await poseidonHash([aliceHash, bobHash]);
 
 // transaction
@@ -68,14 +65,11 @@ const newAliceHash = await poseidonHash([
     newAlice.balance,
 ]);
 
-console.log("newAliceHash: ", newAliceHash.toString());
-console.log("bobHash: ", bobHash.toString());
 // update intermediate root
 const intermediate_root = new MerkleTree.MerkleTree(1, [
     newAliceHash,
     bobHash,
 ]).root();
-console.log("intermRoot: ", intermediate_root.toString());
 
 // update Bob account
 const newBob = {
@@ -91,7 +85,6 @@ const newBobHash = await poseidonHash([
 // update final root
 const final_root = await poseidonHash([newAliceHash, newBobHash]);
 
-console.log(final_root.toString());
 const inputs = {
     accounts_root: accounts_root.toString(),
     intermediate_root: intermediate_root.toString(),

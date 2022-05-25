@@ -10,17 +10,6 @@ template PoseidonHash(nInputs) {
     }
     out <== hasher.out;
 }
-template PoseidonHashT4() {
-    var nInputs = 3;
-    signal input inputs[nInputs];
-    signal output out;
-
-    component hasher = Poseidon(nInputs);
-    for (var i = 0; i < nInputs; i ++) {
-        hasher.inputs[i] <== inputs[i];
-    }
-    out <== hasher.out;
-}
 
 template HashLeftRight() {
     signal input left;
