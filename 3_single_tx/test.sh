@@ -1,5 +1,4 @@
 set -e
-alias snarkjs="node /home/semar/Projects/zku/RollupNC_tutorial/3_verify_merkle/node_modules/snarkjs/cli.js" 
 if [ -f ../powersOfTau28_hez_final_16.ptau ]; then
     echo "powersOfTau28_hez_final_16.ptau already exists. Skipping."
 else
