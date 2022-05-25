@@ -1,5 +1,5 @@
-pragma circom 2.0.0;
-/* include "../node_modules/circomlib/circuits/poseidon.circom"; */
+pragma circom 2.0.3;
+
 include "../node_modules/circomlib/circuits/comparators.circom";
 include "./poseidon.circom";
 
@@ -44,31 +44,4 @@ template GetMerkleRoot(levels, nInputs) {
         hashers[i].right <== selectors[i].out[1];
     }
     out <== hashers[levels - 1].hash;
-}
-
-template MerkleTreeChecker(levels, nInputs) {
-    signal input leaf[nInputs];
-    signal input pathElements[levels];
-    signal input pathIndices[levels];
-    signal input root;
-    signal output out;
-
-    component selectors[levels];
-    component hashers[levels];
-
-    component merkle_root_calc = GetMerkleRoot(levels, nInputs);
-    /* component leaf_hasher = PoseidonHash(nInputs); */
-    for (var i = 0; i < nInputs; i++){
-        /* leaf_hasher.inputs[i] <== leaf[i]; */
-        merkle_root_calc.leaf[i] <== leaf[i];
-    }
-    for (var i = 0; i < levels; i++){
-        merkle_root_calc.pathElements[i] <== pathElements[i];
-        merkle_root_calc.pathIndices[i] <== pathIndices[i];
-    }
-
-    component is_equal = IsEqual();
-    is_equal.in[0] <== merkle_root_calc.out;
-    is_equal.in[1] <== root;
-    out <== is_equal.out;
 }
