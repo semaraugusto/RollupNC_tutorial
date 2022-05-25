@@ -1,32 +1,17 @@
 import * as fs from "fs";
-// import { buildEddsa, buildPoseidon } from "circomlibjs";
 import {
     prv2pub,
     signPoseidon,
 } from "../../node_modules/circomlibjs/src/eddsa.js";
 import poseidon from "../../node_modules/circomlibjs/src/poseidon.js";
-import { BigNumber, utils } from "ethers";
+import { BigNumber } from "ethers";
 
 var poseidonHash = async function (items) {
-    return BigNumber.from(await poseidon(items));
+    return BigNumber.from(poseidon(items));
 };
-// var hash3 = async function (a, b, c) {
-//     return BigNumber.from(poseidon.F.toString(poseidon([a, b, c])));
-//     // return BigNumber.from(await poseidon([a, b, c]));
-// };
-var hash3 = async function (a, b, c) {
-    return BigNumber.from(poseidon([a, b, c]));
-    // return BigNumber.from(await poseidon([a, b, c]));
-};
-
 const leaf = [123, 456, 789];
-const msg = await hash3(
-    BigNumber.from(123),
-    BigNumber.from(456),
-    BigNumber.from(789)
-);
-console.log("leaf: ", leaf);
-console.log("HASH: ", msg.toBigInt());
+
+const msg = await poseidonHash(leaf);
 const prvKey = Buffer.from("1".toString().padStart(64, "0"), "hex");
 const pubKey = prv2pub(prvKey);
 
