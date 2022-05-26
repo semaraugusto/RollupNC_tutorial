@@ -9,19 +9,22 @@ Current implementation assumes merkle-tree only has one level and thus is only a
 Alice starts with: 500 coins
 bob starts with: 0 coins
 
-![accounts-tree](../accounts-tree.jpg)
 
 Each user's commitment onto the merkle-tree consists of: `Hash(userPubkey[0], userPubkey[1], userBalance)`.
 
 For verifying a function, we'll need a few steps on the circuit.
 
 1. Check if sender exists with current balance initial merkle-tree
+![Starting State](../accounts-tree.png)
+
 2. Check if alice has signed the transaction
 3. Debiting Alice's account
 4. Checking if intermediate root matches the one received as input. Note that the intermediate root correspond to the merkle-tree with Alice's account debited and Bob's account unchanged.
+![Intermediate State](../intermediate-tree.png)
 5. Check if Bob exists at initial merkle-root
 6. Credit Bob's account
 7. Output new merkle-root with Alice's account debited and Bob's account credited.
+![Intermediate State](../final-tree.png)
 
 Note that you need to copy your solution for eddsa to this directory!
 
