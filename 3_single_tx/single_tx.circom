@@ -26,24 +26,25 @@ template ProcessTx(k){
     signal input receiver_proof[k];
     signal input receiver_proof_pos[k];
 
-    // output signal output new_accounts_root;
-    // verify sender account exists in accounts_root
+    signal output new_accounts_root;
+
+    // [assignment] verify sender account exists in accounts_root
     component senderExistence = GetMerkleRoot(k, 3);
 
-    // check that transaction was signed by sender
+    // [assignment] check that transaction was signed by sender
     component signatureCheck = VerifyEdDSAPoseidon(5);
 
-    // debit sender account and hash new sender leaf
+    // [assignment] debit sender account and hash new sender leaf
     // check intermediate tree with new sender balance
     component intermediate_tree = GetMerkleRoot(k, 3);
 
-    // verify receiver account exists in intermediate_root
+    // [assignment] verify receiver account exists in intermediate_root
     component receiverExistence = GetMerkleRoot(k, 3);
 
-    // credit receiver account and hash new receiver leaf
+    // [assignment] credit receiver account and hash new receiver leaf
     component updated_tree = GetMerkleRoot(k, 3);
 
-    // output final accounts_root
+    // [assignment] output final accounts_root
 }
 
 component main{public [accounts_root]} = ProcessTx(1);

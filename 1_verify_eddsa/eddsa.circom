@@ -10,11 +10,12 @@ template VerifyEdDSAPoseidon(k) {
     signal input S;
     signal input leaf[k];
     
-    // Hash leaf
+    // [assignment] Hash leaf using poseidon hasher
     component hasher;
     
-    // Add inputs to verifier
+    // [assignment] Add inputs to verifier
     component verifier = EdDSAPoseidonVerifier();   
+
 }
 
 component main{public[from_x, from_y, R8x, R8y, S]} = VerifyEdDSAPoseidon(3);

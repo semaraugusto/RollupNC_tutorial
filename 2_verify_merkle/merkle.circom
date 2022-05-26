@@ -44,8 +44,8 @@ template ManyMerkleTreeChecker(levels, length, nInputs) {
         hashers[i].right <== selectors[i].out[1];
     }
 
-    // verify that the resultant hash (computed merkle root)
-    // is in the set of roots
+    // [assignment] verify that the resultant hash (computed merkle root)
+    // is in the set of roots received as input
 }
 
 component main = ManyMerkleTreeChecker(2, 2, 3);
