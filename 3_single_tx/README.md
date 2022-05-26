@@ -9,7 +9,7 @@ Current implementation assumes merkle-tree only has one level and thus is only a
 Alice starts with: 500 coins
 bob starts with: 0 coins
 
-![](../accounts-tree.png)
+![accounts-tree](../accounts-tree.jpg)
 
 Each user's commitment onto the merkle-tree consists of: `Hash(userPubkey[0], userPubkey[1], userBalance)`.
 
