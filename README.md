@@ -3,15 +3,15 @@ In this assignment we'll build circuits for a ZK Rollup using circom.
 
 # What you should do:
 
-## Setup:
+## Setup
 install required packages by running `yarn` at the root of the assignment
 
-## 1_verify_eddsa. 
+## 1_verify_eddsa.
 Modify eddsa.circom to hash leaf inputs it receives and sign that hash using VerifyEdDSAPoseidon 
 
 (Hint: Check the function signatures at circomlib)
 
-## 2_verify_merkle.
+## 2_verify_merkle
 Modify merkle.circom to check if the merkle-path provided is valid in a set of merkle-trees instead of checking in a single one like you already implemented. (This is not necessarily related to rollups but you're already implemented a merkle-tree so this should be an interesting variation on it)
 
 This implies that you have multiple valid merkle-trees at once. This can be the case, for example, of tornado-cash.
