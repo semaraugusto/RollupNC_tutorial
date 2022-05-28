@@ -30,9 +30,10 @@ You should copy `eddsa.circom` into 3_single_tx and use its template on the `sin
 
 ## 4_comparator
 
-This question doesn't need any coding. This question is just to show a possible problem that if statements may cause in circom.
+**This part doesn't need any coding**. This question is just to show a possible problem that if statements may cause in circom.
 
 Because circom compiles into arithmetic circuits, circuit whose behaviour depends on the value of an input can have unexpected behaviour. One example can be found in bad_force_equal_if_enabled.circom
+
 
 # References 
 https://hackmd.io/@n2eVNsYdRe6KIM4PhI_2AQ/SJJ8QdxuB
